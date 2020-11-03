@@ -1,5 +1,6 @@
 using HotelReservation_System;
 using NUnit.Framework;
+using System;
 
 namespace HotelReservationSystemTest
 {
@@ -22,6 +23,16 @@ namespace HotelReservationSystemTest
             int newCount = hotelReservation.hotelDetails.Count;
             int expected = count + 3;
             Assert.AreEqual(expected, newCount);
+
+        }
+        [Test]
+        public void UC2_Find_Cheapest_Hotel()
+        {
+            var startDate = Convert.ToDateTime("12May2020");
+            var endDate = Convert.ToDateTime("14May2020");
+            Hotel cheapestHotel = hotelReservation.FindCheapestHotel(startDate, endDate);
+            var expected = hotelReservation.hotelDetails["Lakewood"];
+            Assert.AreEqual(expected, cheapestHotel);
 
         }
     }
