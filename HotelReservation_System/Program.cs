@@ -4,40 +4,31 @@ namespace HotelReservation_System
 {
     class Program
     {
+        public enum CustomerType { Regular, Reward };
+
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Hotel Reservation System!");
 
             var hotelReservation = new HotelReservation();
-            bool val = true;
-            //Console.WriteLine("How many hotels do you want?");
-            //int n = Convert.ToInt32(Console.ReadLine());
-            while (val)
-            {
-                var hotel = new Hotel();
-                Console.Write("Enter Hotel Name : ");
-                hotel.hotelName = Console.ReadLine();
 
-                Console.Write("Enter Regular Weekday Rate : ");
-                hotel.weekdayRatesForRegular = Convert.ToInt32(Console.ReadLine());
+            //AddHotelManually(hotelReservation);
+            AddSampleHotels(hotelReservation);
 
-                Console.Write("Enter Regular Weekend Rate : ");
-                hotel.weekendRatesForRegular = Convert.ToInt32(Console.ReadLine());
-
-                Console.Write("Enter Hotel Rating (5 being best, 1 being worst) : ");
-                hotel.rating = Convert.ToInt32(Console.ReadLine());
-
-                hotelReservation.AddHotelDetails(hotel);
-
-                Console.WriteLine("Wanna add more hotels?(yes/no)");
-                if (Console.ReadLine() == "no")
-                    val = false;
-            }
             FindCheapest(hotelReservation);
             FindCheapestBest(hotelReservation);
             FindBest(hotelReservation);
         }
-            public static void FindCheapest(HotelReservation hotelReservation)
+        public static HotelReservation AddSampleHotels(HotelReservation hotelReservation)
+        {
+            hotelReservation.AddHotelDetails(new Hotel { hotelName = "Lakewood", weekdayRatesForRegular = 110, weekendRatesForRegular = 90, weekdayRatesLoyalty = 80, weekendRatesLoyalty = 80, rating = 3 });
+            hotelReservation.AddHotelDetails(new Hotel { hotelName = "Bridgewood", weekdayRatesForRegular = 160, weekendRatesForRegular = 60, weekdayRatesLoyalty = 110, weekendRatesLoyalty = 50, rating = 4 });
+            hotelReservation.AddHotelDetails(new Hotel { hotelName = "Ridgewood", weekdayRatesForRegular = 220, weekendRatesForRegular = 150, weekdayRatesLoyalty = 100, weekendRatesLoyalty = 40, rating = 5 });
+
+            return hotelReservation;
+
+        }
+        public static void FindCheapest(HotelReservation hotelReservation)
         {
             Console.Write("Enter the date range : ");
             var input = Console.ReadLine();
@@ -104,6 +95,14 @@ namespace HotelReservation_System
                 Console.Write("Enter the correct date range \n");
                 FindCheapest(hotelReservation);
             }
+        }
+        public static CustomerType GetCustomerType(CustomerType customer)
+        {
+            Console.Write("Enter the type of Customer : ");
+            var cusType = Console.ReadLine().ToLower();
+            if (cusType != "regular" && cusType != "reward")
+                throw new HotelReservationException(ExceptionType.INVALID_CUSTOMER_TYPE, "Invalid Customer Type Entered");
+            return cusType == "regular" ? CustomerType.Regular : CustomerType.Reward;
         }
     }
 }
