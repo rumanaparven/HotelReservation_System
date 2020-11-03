@@ -47,17 +47,6 @@ namespace HotelReservationSystemTest
             Assert.AreEqual(expected, cheapestHotel);
 
         }
-        [Test]
-        public void UC4_FindCheapestHotels_BasedOnWeekdayAndWeekend()
-        {
-            var startDate = Convert.ToDateTime("10Sep2020");
-            var endDate = Convert.ToDateTime("11Sep2020");
-
-            //hotelReservation = Program.AddSampleHotels(hotelReservation);
-            var expected = hotelReservation.hotelDetails["Lakewood"];
-            var result = hotelReservation.FindCheapestHotels(startDate, endDate);
-            Assert.AreEqual(expected, result);
-
-        }
+        
     }
 }
