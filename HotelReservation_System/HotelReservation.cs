@@ -23,6 +23,30 @@ namespace HotelReservation_System
 
             hotelDetails.Add(hotel.hotelName, hotel);
         }
+        public int GetRating(string hotelName)
+        {
+            foreach(var hotel in hotelDetails)
+            {
+                if (hotel.Key.Equals(hotelName))
+                {
+                    return hotel.Value.rating;
+                }
+                
+            }
+            return 0;
+        }
+        public int GetRatesForRewardCustomers(string hotelName)
+        {
+            foreach (var hotel in hotelDetails)
+            {
+                if (hotel.Key.Equals(hotelName))
+                {
+                    return hotel.Value.weekdayRatesLoyalty;
+                }
+
+            }
+            return 0;
+        }
        
         public int CalculateCost(Hotel hotel, DateTime startDate, DateTime endDate)
         {
@@ -78,11 +102,33 @@ namespace HotelReservation_System
             }
             return cheapestHotels;
         }
+        public List<Hotel> FindBestHotels(DateTime startDate, DateTime endDate)
+        {
+            if (startDate > endDate)
+            {
+                Console.WriteLine("Start date cannot be greater than end date");
+                return null;
+            }
+            var cost = 0;
+            var BestHotels = new List<Hotel>();
+            foreach (var hotel in hotelDetails)
+            {
+                
+                cost = Math.Max(cost, CalculateCost(hotel.Value, startDate, endDate));
+
+            }
+            foreach (var hotel in hotelDetails)
+            {
+                if (CalculateCost(hotel.Value, startDate, endDate) == cost)
+                    BestHotels.Add(hotel.Value);
+            }
+            return BestHotels;
+        }
 
         public List<Hotel> FindCheapestBestRatedHotel(DateTime startDate, DateTime endDate)
         {
             var cheapestHotels = FindCheapestHotels(startDate, endDate);
-            var cheapestBestRatedHotels = new List<Hotel>();
+            List<Hotel> cheapestBestRatedHotels = new List<Hotel>();
             var maxRating = 0;
             foreach (var hotel in cheapestHotels)
                 maxRating = Math.Max(maxRating, hotel.rating);
@@ -90,6 +136,19 @@ namespace HotelReservation_System
                 if (hotel.rating == maxRating)
                     cheapestBestRatedHotels.Add(hotel);
             return cheapestBestRatedHotels;
+        }
+
+        public List<Hotel> FindBestRatedHotel(DateTime startDate, DateTime endDate)
+        {
+            var BestHotels = FindBestHotels(startDate, endDate);
+            List<Hotel> BestRatedHotels = new List<Hotel>();
+            var maxRating = 0;
+            foreach (var hotel in BestHotels)
+                maxRating = Math.Max(maxRating, hotel.rating);
+            foreach (var hotel in BestHotels)
+                if (hotel.rating == maxRating)
+                    BestRatedHotels.Add(hotel);
+            return BestRatedHotels;
         }
     }
 }
