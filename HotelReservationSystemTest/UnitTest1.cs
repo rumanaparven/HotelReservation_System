@@ -33,7 +33,7 @@ namespace HotelReservationSystemTest
         {
             var startDate = Convert.ToDateTime("12May2020");
             var endDate = Convert.ToDateTime("14May2020");
-            Hotel cheapestHotel = hotelReservation.FindCheapestHotel(startDate, endDate);
+            Hotel cheapestHotel = hotelReservation.FindCheapestHotel(startDate, endDate, HotelReservation.CustomerType.Regular);
             var expected = hotelReservation.hotelDetails["Lakewood"];
             Assert.AreEqual(expected, cheapestHotel);
 
@@ -44,7 +44,7 @@ namespace HotelReservationSystemTest
         {
             var startDate = Convert.ToDateTime("11Sep2020");
             var endDate = Convert.ToDateTime("12Sep2020");
-            List<Hotel> hotelList= hotelReservation.FindCheapestHotels(startDate, endDate);
+            List<Hotel> hotelList= hotelReservation.FindCheapestHotels(startDate, endDate, HotelReservation.CustomerType.Regular);
             var expected1 = "Lakewood";
             var expected2 = "Bridgewood";
             Assert.AreEqual(expected1, hotelList[0].hotelName);
@@ -63,7 +63,7 @@ namespace HotelReservationSystemTest
         {
             var startDate = Convert.ToDateTime("11Sep2020");
             var endDate = Convert.ToDateTime("12Sep2020");
-            List<Hotel> list = hotelReservation.FindCheapestBestRatedHotel(startDate, endDate);
+            List<Hotel> list = hotelReservation.FindCheapestBestRatedHotel(startDate, endDate, HotelReservation.CustomerType.Regular);
             var expected1 = "Bridgewood";
             Assert.AreEqual(expected1, list[0].hotelName);
           
@@ -74,7 +74,7 @@ namespace HotelReservationSystemTest
         {
             var startDate = Convert.ToDateTime("11Sep2020");
             var endDate = Convert.ToDateTime("12Sep2020");
-            List<Hotel> list = hotelReservation.FindBestRatedHotel(startDate, endDate);
+            List<Hotel> list = hotelReservation.FindBestRatedHotel(startDate, endDate, HotelReservation.CustomerType.Regular);
             var expected1 = "Ridgewood";
             Assert.AreEqual(expected1, list[list.Count-1].hotelName);
         }
@@ -86,6 +86,18 @@ namespace HotelReservationSystemTest
             Assert.AreEqual(expected, weekdayRate);
             
         }
+        [Test]
+        public void UC10_FindCheapestBestRatedHotelsForRewardCustomer()
+        {
+            var startDate = Convert.ToDateTime("11Sep2020");
+            var endDate = Convert.ToDateTime("12Sep2020");
+
+            var expected = hotelReservation.hotelDetails["Ridgewood"];
+            var result = hotelReservation.FindCheapestBestRatedHotel(startDate, endDate, HotelReservation.CustomerType.Reward);
+
+            Assert.That(result, Does.Contain(expected));
+        }
+
 
 
     }
