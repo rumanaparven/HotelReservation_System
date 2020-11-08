@@ -97,6 +97,29 @@ namespace HotelReservationSystemTest
 
             Assert.That(result, Does.Contain(expected));
         }
+        [Test]
+        public void ThrowException_GivenInvalidCustomerType( )
+        {
+            hotelReservation.AddHotelDetails(new Hotel { hotelName = "Lakewood", weekdayRatesForRegular = 110, weekendRatesForRegular = 90, weekdayRatesLoyalty = 80, weekendRatesLoyalty = 80, rating = 3 });
+            hotelReservation.AddHotelDetails(new Hotel { hotelName = "Bridgewood", weekdayRatesForRegular = 150, weekendRatesForRegular = 50, weekdayRatesLoyalty = 110, weekendRatesLoyalty = 50, rating = 4 });
+            hotelReservation.AddHotelDetails(new Hotel { hotelName = "Ridgewood", weekdayRatesForRegular = 220, weekendRatesForRegular = 150, weekdayRatesLoyalty = 100, weekendRatesLoyalty = 40, rating = 5 });
+
+            try
+            {
+                var startDate = Convert.ToDateTime("11Sep2020");
+                var endDate = Convert.ToDateTime("12Sep2020");
+                var expected = hotelReservation.hotelDetails["Ridgewood"];
+
+                var cusType = HotelReservation.GetCustomerType();
+                var result = hotelReservation.FindCheapestBestRatedHotel(startDate, endDate, cusType);
+
+                Assert.That(result, Does.Contain(expected));
+            }
+            catch (HotelReservationException e)
+            {
+                Assert.AreEqual(e.Message, "Invalid Customer Type Entered");
+            }
+        }
 
 
 

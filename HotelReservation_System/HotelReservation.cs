@@ -151,14 +151,13 @@ namespace HotelReservation_System
             return BestRatedHotels;
         }
         public enum CustomerType { Regular, Reward };
-        public static CustomerType GetCustomerType(CustomerType customer)
+        public static CustomerType GetCustomerType()
         {
-            Console.Write("Enter the type of Customer : ");
-            var cusType = Console.ReadLine().ToLower();
+            var cusType = "ordinary";
             if (cusType != "regular" && cusType != "reward")
                 throw new HotelReservationException(ExceptionType.INVALID_CUSTOMER_TYPE, "Invalid Customer Type Entered");
             return cusType == "regular" ? CustomerType.Regular : CustomerType.Reward;
         }
-        
+
     }
 }
